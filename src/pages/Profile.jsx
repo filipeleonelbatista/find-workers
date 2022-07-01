@@ -118,7 +118,7 @@ function Profile() {
       updated_at: Date.now(),
     };
 
-    if(await updateUserByID(user.uid, data)) return navigate("/painel");
+    if (await updateUserByID(user.uid, data)) return navigate("/painel");
   }
 
   const handleCep = async () => {
@@ -161,245 +161,247 @@ function Profile() {
   }, [user]);
 
   return (
-    <div className={styles.container}>
+    <>
       <Sidebar />
-      <div className={styles.mainContainer}>
-        <header className={styles.mainHeader}>
-          <h2>Perfil</h2>
-          {
-            isView ?
-              <Button transparent onClick={() => setIsView(false)}>
-                <FaEdit />
-                Editar
-              </Button> :
-              <div className={styles.inputGroup} style={{ justifyContent: 'flex-end'}}>
-                <Button style={{backgroundColor: "#EA5656"}} onClick={() => navigate("/painel")}>
-                  <FaTrash />
-                  Cancelar
-                </Button>
-                <Button style={{backgroundColor: "#28a745"}} onClick={() => handleOnSubmit()}>
-                  <FaSave />
-                  Salvar
-                </Button>
-              </div>
-          }
-        </header>
-        <main className={styles.mainContent}>
-          <fieldset className={styles.fieldsetContainer}>
-            <legend className={styles.legend} >Sobre você</legend>
+      <div className={styles.container}>
+        <div className={styles.mainContainer}>
+          <header className={styles.mainHeader}>
+            <h2>Perfil</h2>
+            {
+              isView ?
+                <Button transparent onClick={() => setIsView(false)}>
+                  <FaEdit />
+                  Editar
+                </Button> :
+                <div className={styles.inputGroup} style={{ justifyContent: 'flex-end' }}>
+                  <Button style={{ backgroundColor: "#EA5656" }} onClick={() => navigate("/painel")}>
+                    <FaTrash />
+                    Cancelar
+                  </Button>
+                  <Button style={{ backgroundColor: "#28a745" }} onClick={() => handleOnSubmit()}>
+                    <FaSave />
+                    Salvar
+                  </Button>
+                </div>
+            }
+          </header>
+          <main className={styles.mainContent}>
+            <fieldset className={styles.fieldsetContainer}>
+              <legend className={styles.legend} >Sobre você</legend>
 
-            <div className={styles.inputGroupGrid}>
-              <label className={styles.uploadButton}>
-                <input
-                  disabled={isView}
-                  required
-                  className={styles.uploadInput}
-                  type="file"
-                  accept="image/png, image/jpeg"
-                  onChange={(e) => handleFilePreview(e)}
-                ></input>
-                {selectedImage ? (
-                  <div
-                    alt="Imagem Selecionada"
-                    style={{
-                      background: `url(${selectedImage}) no-repeat center center`,
-                      borderRadius: "0.8rem",
-                      width: "100%",
-                      height: "100%",
-                      backgroundSize: "cover",
-                    }}
-                  ></div>
-                ) : (
-                  <FaCamera />
-                )}
-              </label>
-              <div>
+              <div className={styles.inputGroupGrid}>
+                <label className={styles.uploadButton}>
+                  <input
+                    disabled={isView}
+                    required
+                    className={styles.uploadInput}
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    onChange={(e) => handleFilePreview(e)}
+                  ></input>
+                  {selectedImage ? (
+                    <div
+                      alt="Imagem Selecionada"
+                      style={{
+                        background: `url(${selectedImage}) no-repeat center center`,
+                        borderRadius: "0.8rem",
+                        width: "100%",
+                        height: "100%",
+                        backgroundSize: "cover",
+                      }}
+                    ></div>
+                  ) : (
+                    <FaCamera />
+                  )}
+                </label>
+                <div>
+                  <Input
+                    disabled={isView}
+                    id="name"
+                    type="text"
+                    label="Nome completo"
+                    required
+                    value={name}
+                    onChange={(e) => {
+                      setName(e.target.value);
+                    }} />
+                  <div className={styles.inputGroup}>
+                    <Input
+                      disabled={isView}
+                      required
+                      id="cpf"
+                      type="text"
+                      label="CPF"
+                      maxLength={14}
+                      value={CPF}
+                      onChange={(e) => {
+                        setCPF(cpfMask(e.target.value));
+                      }} />
+                    <Input
+                      disabled={true}
+                      id="email"
+                      type="text"
+                      label="Email"
+                      required
+                      value={email}
+                      tip="Email não pode ser alterado manualmente."
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                      }} />
+                    <Input
+                      disabled={isView}
+                      id="whatsapp/celular"
+                      type="text"
+                      label="Whatsapp/Celular"
+                      required
+                      value={phone}
+                      onChange={(e) => {
+                        setPhone(phoneMask(e.target.value));
+                      }} />
+                  </div>
+                  <div className={styles.inputGroup}>
+                    <Input
+                      disabled={isView}
+                      id="birth_date"
+                      type="date"
+                      label="Data de nascimento"
+                      value={birth_date}
+                      onChange={(e) => {
+                        setBirthDate(date(e.target.value));
+                      }} />
+                    <Input
+                      disabled={isView}
+                      id="CNPJ"
+                      type="text"
+                      label="CNPJ"
+                      tip="Completar com CNPJ aumentam as chances de receber contatos"
+                      value={CNPJ}
+                      maxLength={18}
+                      onChange={(e) => {
+                        setCNPJ(cnpjMask(e.target.value));
+                      }} />
+                    <Input
+                      disabled={isView}
+                      id="nome_fantasia"
+                      type="text"
+                      label="Nome fantasia"
+                      placeholder=""
+                      value={nome_fantasia}
+                      onChange={(e) => {
+                        setNomeFantasia(e.target.value);
+                      }} />
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+            <fieldset className={styles.fieldsetContainer}>
+              <legend className={styles.legend} >Endereço de contato</legend>
+
+              <Input
+                disabled={isView}
+                id="cep"
+                type="text"
+                label="CEP"
+                onBlur={handleCep}
+                maxLength={9}
+                tip="Digite seu CEP para procurar automaticamente o endereço."
+                value={CEP}
+                onChange={(e) => {
+                  setCEP(cepMask(e.target.value));
+                }} />
+              <div className={styles.inputGroup}>
                 <Input
                   disabled={isView}
-                  id="name"
+                  id="logradouro"
                   type="text"
-                  label="Nome completo"
-                  required
-                  value={name}
+                  label="Logradouro"
+                  placeholder=""
+                  value={logradouro}
                   onChange={(e) => {
-                    setName(e.target.value);
+                    setLogradouro(e.target.value);
                   }} />
-                <div className={styles.inputGroup}>
-                  <Input
-                    disabled={isView}
-                    required
-                    id="cpf"
-                    type="text"
-                    label="CPF"
-                    maxLength={14}
-                    value={CPF}
-                    onChange={(e) => {
-                      setCPF(cpfMask(e.target.value));
-                    }} />
-                  <Input
-                    disabled={true}
-                    id="email"
-                    type="text"
-                    label="Email"
-                    required
-                    value={email}
-                    tip="Email não pode ser alterado manualmente."
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                    }} />
-                  <Input
-                    disabled={isView}
-                    id="whatsapp/celular"
-                    type="text"
-                    label="Whatsapp/Celular"
-                    required
-                    value={phone}
-                    onChange={(e) => {
-                      setPhone(phoneMask(e.target.value));
-                    }} />
-                </div>
-                <div className={styles.inputGroup}>
-                  <Input
-                    disabled={isView}
-                    id="birth_date"
-                    type="date"
-                    label="Data de nascimento"
-                    value={birth_date}
-                    onChange={(e) => {
-                      setBirthDate(date(e.target.value));
-                    }} />
-                  <Input
-                    disabled={isView}
-                    id="CNPJ"
-                    type="text"
-                    label="CNPJ"
-                    tip="Completar com CNPJ aumentam as chances de receber contatos"
-                    value={CNPJ}
-                    maxLength={18}
-                    onChange={(e) => {
-                      setCNPJ(cnpjMask(e.target.value));
-                    }} />
-                  <Input
-                    disabled={isView}
-                    id="nome_fantasia"
-                    type="text"
-                    label="Nome fantasia"
-                    placeholder=""
-                    value={nome_fantasia}
-                    onChange={(e) => {
-                      setNomeFantasia(e.target.value);
-                    }} />
-                </div>
+                <Input
+                  disabled={isView}
+                  id="numero"
+                  type="text"
+                  label="Numero"
+                  placeholder=""
+                  value={numero}
+                  onChange={(e) => {
+                    setNumero(e.target.value);
+                  }} />
+                <Input
+                  disabled={isView}
+                  id="bairro"
+                  type="text"
+                  label="Bairro"
+                  placeholder=""
+                  value={bairro}
+                  onChange={(e) => {
+                    setBairro(e.target.value);
+                  }} />
               </div>
-            </div>
-          </fieldset>
-          <fieldset className={styles.fieldsetContainer}>
-            <legend className={styles.legend} >Endereço de contato</legend>
+              <div className={styles.inputGroup}>
+                <Input
+                  disabled={isView}
+                  id="cidade"
+                  type="text"
+                  label="Cidade"
+                  placeholder=""
+                  value={cidade}
+                  onChange={(e) => {
+                    setCidade(e.target.value);
+                  }} />
+                <Input
+                  disabled={isView}
+                  id="uf"
+                  type="text"
+                  label="Estado"
+                  placeholder=""
+                  value={UF}
+                  onChange={(e) => {
+                    setUF(e.target.value);
+                  }} />
+                <Input
+                  disabled={isView}
+                  id="pais"
+                  type="text"
+                  label="País"
+                  placeholder=""
+                  value={pais}
+                  onChange={(e) => {
+                    setPais(e.target.value);
+                  }} />
+              </div>
 
-            <Input
-              disabled={isView}
-              id="cep"
-              type="text"
-              label="CEP"
-              onBlur={handleCep}
-              maxLength={9}
-              tip="Digite seu CEP para procurar automaticamente o endereço."
-              value={CEP}
-              onChange={(e) => {
-                setCEP(cepMask(e.target.value));
-              }} />
-            <div className={styles.inputGroup}>
-              <Input
+            </fieldset>
+            <fieldset className={styles.fieldsetContainer}>
+              <legend className={styles.legend} >Sobre seu serviços</legend>
+              <Textarea
                 disabled={isView}
-                id="logradouro"
+                id="resumo"
                 type="text"
-                label="Logradouro"
-                placeholder=""
-                value={logradouro}
+                label="Resumo"
+                rows={6}
+                tip="Faça seu comercial de 30 segundos ou conte sobre os serviços que voce faz. Essa é uma area livre para você chamar a atenção do seu cliente"
+                value={services}
                 onChange={(e) => {
-                  setLogradouro(e.target.value);
+                  setServices(e.target.value);
                 }} />
-              <Input
+              <InputUpload
                 disabled={isView}
-                id="numero"
-                type="text"
-                label="Numero"
-                placeholder=""
-                value={numero}
-                onChange={(e) => {
-                  setNumero(e.target.value);
-                }} />
-              <Input
-                disabled={isView}
-                id="bairro"
-                type="text"
-                label="Bairro"
-                placeholder=""
-                value={bairro}
-                onChange={(e) => {
-                  setBairro(e.target.value);
-                }} />
-            </div>
-            <div className={styles.inputGroup}>
-              <Input
-                disabled={isView}
-                id="cidade"
-                type="text"
-                label="Cidade"
-                placeholder=""
-                value={cidade}
-                onChange={(e) => {
-                  setCidade(e.target.value);
-                }} />
-              <Input
-                disabled={isView}
-                id="uf"
-                type="text"
-                label="Estado"
-                placeholder=""
-                value={UF}
-                onChange={(e) => {
-                  setUF(e.target.value);
-                }} />
-              <Input
-                disabled={isView}
-                id="pais"
-                type="text"
-                label="País"
-                placeholder=""
-                value={pais}
-                onChange={(e) => {
-                  setPais(e.target.value);
-                }} />
-            </div>
-
-          </fieldset>
-          <fieldset className={styles.fieldsetContainer}>
-            <legend className={styles.legend} >Sobre seu serviços</legend>
-            <Textarea
-              disabled={isView}
-              id="resumo"
-              type="text"
-              label="Resumo"
-              rows={6}
-              tip="Faça seu comercial de 30 segundos ou conte sobre os serviços que voce faz. Essa é uma area livre para você chamar a atenção do seu cliente"
-              value={services}
-              onChange={(e) => {
-                setServices(e.target.value);
-              }} />
-            <InputUpload
-              disabled={isView}
-              label="Anexo"
-              id="donwloadable_content"
-              attachment={[donwloadable_content]}
-              onChange={(e) => handleFilesPreview(e)}
-              accept="image/png, image/jpeg"
-              tip="Selecione uma imagem contendo informações dos seus serviços para as pessoas fazerem o download"
-            />
-          </fieldset>
-        </main>
+                label="Anexo"
+                id="donwloadable_content"
+                attachment={[donwloadable_content]}
+                onChange={(e) => handleFilesPreview(e)}
+                accept="image/png, image/jpeg"
+                tip="Selecione uma imagem contendo informações dos seus serviços para as pessoas fazerem o download"
+              />
+            </fieldset>
+          </main>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

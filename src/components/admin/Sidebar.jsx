@@ -17,7 +17,7 @@ function Sidebar() {
     );
 
   return (
-    <aside className={styles.container}>
+    <div className={styles.container}>
       <Link to="/painel">
         <img
           src={logo}
@@ -34,15 +34,13 @@ function Sidebar() {
               : styles.link
           }
         >
-          <FaTachometerAlt size={22} />
-        </NavLink>        
+          <FaTachometerAlt size={22} /> Painel
+        </NavLink>
       </div>
-      <div className={styles.menu}>
-        <Link to="/perfil" title={user.name}>
-          <Avatar uri={user.avatar} alt={user.name} avatarName={user.name}/>
-        </Link>
-      </div>
-    </aside>
+      <Link to="/perfil" title={user.name}>
+        <Avatar uri={user.avatar} alt={user.name} avatarName={user.name} />
+      </Link>
+    </div>
   );
 }
 
