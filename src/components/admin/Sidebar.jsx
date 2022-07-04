@@ -1,4 +1,4 @@
-import { FaBell, FaTachometerAlt } from "react-icons/fa";
+import { FaBell, FaTachometerAlt, FaUsersCog } from "react-icons/fa";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import logo from "../../assets/icon.png";
 import { useAuth } from "../../hooks/useAuth";
@@ -35,6 +35,16 @@ function Sidebar() {
           }
         >
           <FaTachometerAlt size={22} /> Painel
+        </NavLink>
+        <NavLink
+          to="/painel/trabalhadores"
+          className={
+            location.pathname === "/painel/trabalhadores"
+              ? styles.activedDiv
+              : styles.link
+          }
+        >
+          <FaUsersCog size={22} /> Trabalhadores
         </NavLink>
       </div>
       <Link to="/perfil" title={user.name}>

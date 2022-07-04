@@ -267,7 +267,7 @@ function Profile() {
                       label="Data de nascimento"
                       value={birth_date}
                       onChange={(e) => {
-                        setBirthDate(date(e.target.value));
+                        setBirthDate(e.target.value);
                       }} />
                     <Input
                       disabled={isView}

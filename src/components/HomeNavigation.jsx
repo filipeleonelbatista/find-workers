@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaBars, FaDog, FaSignInAlt, FaUserMd } from "react-icons/fa";
+import { FaBars, FaHome, FaSignInAlt, FaUsersCog } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logoImg from "../assets/logo.png";
 import styles from "../styles/components/HomeNavigation.module.css";
@@ -68,10 +68,10 @@ export default function HomeNavigation() {
         {isShow && (
           <div className={styles.menuItems}>
             <Link to="/" className={styles.menuItem}>
-              <FaDog /> Inicio
+              <FaHome /> Inicio
             </Link>
             <Link to="/trabalhadores" className={styles.menuItem}>
-              <FaUserMd /> Ver Trabalhadores
+              <FaUsersCog /> Ver Trabalhadores
             </Link>
             <Link to="/entrar" className={styles.menuItem}>
               <FaSignInAlt />

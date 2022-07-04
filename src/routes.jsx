@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes as Switch } from "react-router-dom";
 import { AuthContextProvider } from "./context/AuthContext";
 import Dashboard from "./pages/Dashboard";
+import DashboardWorkers from "./pages/DashboardWorkers";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
@@ -19,6 +20,7 @@ function Routes() {
           <Route path="/trabalhadores/" element={<Workers />} />
           <Route path="/trabalhadores/:id" element={<Workers />} />
           <Route path="/perfil" element={<Profile />} />
+          <Route path="/painel/trabalhadores" element={<DashboardWorkers />} />
           <Route path="*" element={<NotFound />} />
         </Switch>
       </BrowserRouter>
